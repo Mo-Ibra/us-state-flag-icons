@@ -1,15 +1,533 @@
 {
   "name": "us-state-flag-icons",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Vector US state and territory flag icons (SVG, React components, strings, CSS).",
+  "main": "index.cjs",
   "scripts": {
     "fetch-flags": "node scripts/fetch-flags.js",
     "generate-states": "node scripts/generate-states.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "optimize-flags": "node scripts/optimize-flags.js",
+    "generate-string-flags": "node scripts/generate-string-flags.js",
+    "generate-react-flags": "node scripts/generate-react-flags.js",
+    "generate-css": "node scripts/generate-css.js",
+    "zip-flags": "node scripts/create-flags-zip-archive.js",
+    "update-exports": "node scripts/update-package-exports.js",
+    "clean": "rimraf svg react string commonjs flags.css flags.zip source/states.json source/states.json.js",
+    "build": "npm run clean && npm run generate-states && npm run optimize-flags && npm run generate-string-flags && npm run generate-react-flags && npm run generate-css && npm run zip-flags && npm run update-exports",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "us",
+    "usa",
+    "state",
+    "flag",
+    "flags",
+    "icons",
+    "svg",
+    "react"
+  ],
   "author": "Mo-Ibra",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "^8.0.6",
+    "@babel/preset-react": "^8.0.1",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "archiver-node": "^8.0.9",
+    "mini-svg-data-uri": "^1.4.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "rimraf": "^6.1.3",
+    "svgo": "^4.1.0"
+  },
+  "module": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    },
+    "./svg/*": "./svg/*",
+    "./flags.css": "./flags.css",
+    "./react": {
+      "types": "./react/index.d.ts",
+      "default": "./react/index.js"
+    },
+    "./string": {
+      "types": "./string/index.d.ts",
+      "default": "./string/index.js"
+    },
+    "./react/AK": {
+      "types": "./react/AK.d.ts",
+      "default": "./react/AK.js"
+    },
+    "./string/AK": {
+      "types": "./string/AK.d.ts",
+      "default": "./string/AK.js"
+    },
+    "./react/AL": {
+      "types": "./react/AL.d.ts",
+      "default": "./react/AL.js"
+    },
+    "./string/AL": {
+      "types": "./string/AL.d.ts",
+      "default": "./string/AL.js"
+    },
+    "./react/AR": {
+      "types": "./react/AR.d.ts",
+      "default": "./react/AR.js"
+    },
+    "./string/AR": {
+      "types": "./string/AR.d.ts",
+      "default": "./string/AR.js"
+    },
+    "./react/AS": {
+      "types": "./react/AS.d.ts",
+      "default": "./react/AS.js"
+    },
+    "./string/AS": {
+      "types": "./string/AS.d.ts",
+      "default": "./string/AS.js"
+    },
+    "./react/AZ": {
+      "types": "./react/AZ.d.ts",
+      "default": "./react/AZ.js"
+    },
+    "./string/AZ": {
+      "types": "./string/AZ.d.ts",
+      "default": "./string/AZ.js"
+    },
+    "./react/CA": {
+      "types": "./react/CA.d.ts",
+      "default": "./react/CA.js"
+    },
+    "./string/CA": {
+      "types": "./string/CA.d.ts",
+      "default": "./string/CA.js"
+    },
+    "./react/CO": {
+      "types": "./react/CO.d.ts",
+      "default": "./react/CO.js"
+    },
+    "./string/CO": {
+      "types": "./string/CO.d.ts",
+      "default": "./string/CO.js"
+    },
+    "./react/CT": {
+      "types": "./react/CT.d.ts",
+      "default": "./react/CT.js"
+    },
+    "./string/CT": {
+      "types": "./string/CT.d.ts",
+      "default": "./string/CT.js"
+    },
+    "./react/DC": {
+      "types": "./react/DC.d.ts",
+      "default": "./react/DC.js"
+    },
+    "./string/DC": {
+      "types": "./string/DC.d.ts",
+      "default": "./string/DC.js"
+    },
+    "./react/DE": {
+      "types": "./react/DE.d.ts",
+      "default": "./react/DE.js"
+    },
+    "./string/DE": {
+      "types": "./string/DE.d.ts",
+      "default": "./string/DE.js"
+    },
+    "./react/FL": {
+      "types": "./react/FL.d.ts",
+      "default": "./react/FL.js"
+    },
+    "./string/FL": {
+      "types": "./string/FL.d.ts",
+      "default": "./string/FL.js"
+    },
+    "./react/GA": {
+      "types": "./react/GA.d.ts",
+      "default": "./react/GA.js"
+    },
+    "./string/GA": {
+      "types": "./string/GA.d.ts",
+      "default": "./string/GA.js"
+    },
+    "./react/GU": {
+      "types": "./react/GU.d.ts",
+      "default": "./react/GU.js"
+    },
+    "./string/GU": {
+      "types": "./string/GU.d.ts",
+      "default": "./string/GU.js"
+    },
+    "./react/HI": {
+      "types": "./react/HI.d.ts",
+      "default": "./react/HI.js"
+    },
+    "./string/HI": {
+      "types": "./string/HI.d.ts",
+      "default": "./string/HI.js"
+    },
+    "./react/IA": {
+      "types": "./react/IA.d.ts",
+      "default": "./react/IA.js"
+    },
+    "./string/IA": {
+      "types": "./string/IA.d.ts",
+      "default": "./string/IA.js"
+    },
+    "./react/ID": {
+      "types": "./react/ID.d.ts",
+      "default": "./react/ID.js"
+    },
+    "./string/ID": {
+      "types": "./string/ID.d.ts",
+      "default": "./string/ID.js"
+    },
+    "./react/IL": {
+      "types": "./react/IL.d.ts",
+      "default": "./react/IL.js"
+    },
+    "./string/IL": {
+      "types": "./string/IL.d.ts",
+      "default": "./string/IL.js"
+    },
+    "./react/IN": {
+      "types": "./react/IN.d.ts",
+      "default": "./react/IN.js"
+    },
+    "./string/IN": {
+      "types": "./string/IN.d.ts",
+      "default": "./string/IN.js"
+    },
+    "./react/KS": {
+      "types": "./react/KS.d.ts",
+      "default": "./react/KS.js"
+    },
+    "./string/KS": {
+      "types": "./string/KS.d.ts",
+      "default": "./string/KS.js"
+    },
+    "./react/KY": {
+      "types": "./react/KY.d.ts",
+      "default": "./react/KY.js"
+    },
+    "./string/KY": {
+      "types": "./string/KY.d.ts",
+      "default": "./string/KY.js"
+    },
+    "./react/LA": {
+      "types": "./react/LA.d.ts",
+      "default": "./react/LA.js"
+    },
+    "./string/LA": {
+      "types": "./string/LA.d.ts",
+      "default": "./string/LA.js"
+    },
+    "./react/MA": {
+      "types": "./react/MA.d.ts",
+      "default": "./react/MA.js"
+    },
+    "./string/MA": {
+      "types": "./string/MA.d.ts",
+      "default": "./string/MA.js"
+    },
+    "./react/MD": {
+      "types": "./react/MD.d.ts",
+      "default": "./react/MD.js"
+    },
+    "./string/MD": {
+      "types": "./string/MD.d.ts",
+      "default": "./string/MD.js"
+    },
+    "./react/ME": {
+      "types": "./react/ME.d.ts",
+      "default": "./react/ME.js"
+    },
+    "./string/ME": {
+      "types": "./string/ME.d.ts",
+      "default": "./string/ME.js"
+    },
+    "./react/MI": {
+      "types": "./react/MI.d.ts",
+      "default": "./react/MI.js"
+    },
+    "./string/MI": {
+      "types": "./string/MI.d.ts",
+      "default": "./string/MI.js"
+    },
+    "./react/MN": {
+      "types": "./react/MN.d.ts",
+      "default": "./react/MN.js"
+    },
+    "./string/MN": {
+      "types": "./string/MN.d.ts",
+      "default": "./string/MN.js"
+    },
+    "./react/MO": {
+      "types": "./react/MO.d.ts",
+      "default": "./react/MO.js"
+    },
+    "./string/MO": {
+      "types": "./string/MO.d.ts",
+      "default": "./string/MO.js"
+    },
+    "./react/MP": {
+      "types": "./react/MP.d.ts",
+      "default": "./react/MP.js"
+    },
+    "./string/MP": {
+      "types": "./string/MP.d.ts",
+      "default": "./string/MP.js"
+    },
+    "./react/MS": {
+      "types": "./react/MS.d.ts",
+      "default": "./react/MS.js"
+    },
+    "./string/MS": {
+      "types": "./string/MS.d.ts",
+      "default": "./string/MS.js"
+    },
+    "./react/MT": {
+      "types": "./react/MT.d.ts",
+      "default": "./react/MT.js"
+    },
+    "./string/MT": {
+      "types": "./string/MT.d.ts",
+      "default": "./string/MT.js"
+    },
+    "./react/NC": {
+      "types": "./react/NC.d.ts",
+      "default": "./react/NC.js"
+    },
+    "./string/NC": {
+      "types": "./string/NC.d.ts",
+      "default": "./string/NC.js"
+    },
+    "./react/ND": {
+      "types": "./react/ND.d.ts",
+      "default": "./react/ND.js"
+    },
+    "./string/ND": {
+      "types": "./string/ND.d.ts",
+      "default": "./string/ND.js"
+    },
+    "./react/NE": {
+      "types": "./react/NE.d.ts",
+      "default": "./react/NE.js"
+    },
+    "./string/NE": {
+      "types": "./string/NE.d.ts",
+      "default": "./string/NE.js"
+    },
+    "./react/NH": {
+      "types": "./react/NH.d.ts",
+      "default": "./react/NH.js"
+    },
+    "./string/NH": {
+      "types": "./string/NH.d.ts",
+      "default": "./string/NH.js"
+    },
+    "./react/NJ": {
+      "types": "./react/NJ.d.ts",
+      "default": "./react/NJ.js"
+    },
+    "./string/NJ": {
+      "types": "./string/NJ.d.ts",
+      "default": "./string/NJ.js"
+    },
+    "./react/NM": {
+      "types": "./react/NM.d.ts",
+      "default": "./react/NM.js"
+    },
+    "./string/NM": {
+      "types": "./string/NM.d.ts",
+      "default": "./string/NM.js"
+    },
+    "./react/NV": {
+      "types": "./react/NV.d.ts",
+      "default": "./react/NV.js"
+    },
+    "./string/NV": {
+      "types": "./string/NV.d.ts",
+      "default": "./string/NV.js"
+    },
+    "./react/NY": {
+      "types": "./react/NY.d.ts",
+      "default": "./react/NY.js"
+    },
+    "./string/NY": {
+      "types": "./string/NY.d.ts",
+      "default": "./string/NY.js"
+    },
+    "./react/OH": {
+      "types": "./react/OH.d.ts",
+      "default": "./react/OH.js"
+    },
+    "./string/OH": {
+      "types": "./string/OH.d.ts",
+      "default": "./string/OH.js"
+    },
+    "./react/OK": {
+      "types": "./react/OK.d.ts",
+      "default": "./react/OK.js"
+    },
+    "./string/OK": {
+      "types": "./string/OK.d.ts",
+      "default": "./string/OK.js"
+    },
+    "./react/OR": {
+      "types": "./react/OR.d.ts",
+      "default": "./react/OR.js"
+    },
+    "./string/OR": {
+      "types": "./string/OR.d.ts",
+      "default": "./string/OR.js"
+    },
+    "./react/PA": {
+      "types": "./react/PA.d.ts",
+      "default": "./react/PA.js"
+    },
+    "./string/PA": {
+      "types": "./string/PA.d.ts",
+      "default": "./string/PA.js"
+    },
+    "./react/PR": {
+      "types": "./react/PR.d.ts",
+      "default": "./react/PR.js"
+    },
+    "./string/PR": {
+      "types": "./string/PR.d.ts",
+      "default": "./string/PR.js"
+    },
+    "./react/RI": {
+      "types": "./react/RI.d.ts",
+      "default": "./react/RI.js"
+    },
+    "./string/RI": {
+      "types": "./string/RI.d.ts",
+      "default": "./string/RI.js"
+    },
+    "./react/SC": {
+      "types": "./react/SC.d.ts",
+      "default": "./react/SC.js"
+    },
+    "./string/SC": {
+      "types": "./string/SC.d.ts",
+      "default": "./string/SC.js"
+    },
+    "./react/SD": {
+      "types": "./react/SD.d.ts",
+      "default": "./react/SD.js"
+    },
+    "./string/SD": {
+      "types": "./string/SD.d.ts",
+      "default": "./string/SD.js"
+    },
+    "./react/TN": {
+      "types": "./react/TN.d.ts",
+      "default": "./react/TN.js"
+    },
+    "./string/TN": {
+      "types": "./string/TN.d.ts",
+      "default": "./string/TN.js"
+    },
+    "./react/TX": {
+      "types": "./react/TX.d.ts",
+      "default": "./react/TX.js"
+    },
+    "./string/TX": {
+      "types": "./string/TX.d.ts",
+      "default": "./string/TX.js"
+    },
+    "./react/UT": {
+      "types": "./react/UT.d.ts",
+      "default": "./react/UT.js"
+    },
+    "./string/UT": {
+      "types": "./string/UT.d.ts",
+      "default": "./string/UT.js"
+    },
+    "./react/VA": {
+      "types": "./react/VA.d.ts",
+      "default": "./react/VA.js"
+    },
+    "./string/VA": {
+      "types": "./string/VA.d.ts",
+      "default": "./string/VA.js"
+    },
+    "./react/VI": {
+      "types": "./react/VI.d.ts",
+      "default": "./react/VI.js"
+    },
+    "./string/VI": {
+      "types": "./string/VI.d.ts",
+      "default": "./string/VI.js"
+    },
+    "./react/VT": {
+      "types": "./react/VT.d.ts",
+      "default": "./react/VT.js"
+    },
+    "./string/VT": {
+      "types": "./string/VT.d.ts",
+      "default": "./string/VT.js"
+    },
+    "./react/WA": {
+      "types": "./react/WA.d.ts",
+      "default": "./react/WA.js"
+    },
+    "./string/WA": {
+      "types": "./string/WA.d.ts",
+      "default": "./string/WA.js"
+    },
+    "./react/WI": {
+      "types": "./react/WI.d.ts",
+      "default": "./react/WI.js"
+    },
+    "./string/WI": {
+      "types": "./string/WI.d.ts",
+      "default": "./string/WI.js"
+    },
+    "./react/WV": {
+      "types": "./react/WV.d.ts",
+      "default": "./react/WV.js"
+    },
+    "./string/WV": {
+      "types": "./string/WV.d.ts",
+      "default": "./string/WV.js"
+    },
+    "./react/WY": {
+      "types": "./react/WY.d.ts",
+      "default": "./react/WY.js"
+    },
+    "./string/WY": {
+      "types": "./string/WY.d.ts",
+      "default": "./string/WY.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
+    "source/states.json",
+    "source/states.json.js",
+    "svg/",
+    "react/",
+    "string/",
+    "flags.css"
+  ],
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
 }
