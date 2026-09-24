@@ -1,4 +1,6 @@
-// Phase 2: fetch + curate the US state/territory flag SVGs.
+// Fetches and curates the source US state/territory flag SVGs from Wikimedia
+// Commons. This is a one-off maintenance script: run it to bootstrap the
+// `flags/` directory or to refresh a flag whose artwork changed upstream.
 //
 // For each entry in `scripts/us-states.json` it:
 //   1. Downloads the original SVG from Wikimedia Commons (Special:FilePath),
