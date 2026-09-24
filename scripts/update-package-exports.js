@@ -27,6 +27,7 @@ const FILES = [
 	'react/',
 	'string/',
 	'flags.css',
+	'CHANGELOG.md',
 ]
 
 async function main() {

@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build distributable assets
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Validate package (publint)
+        run: npm run lint:package
+
+      - name: Validate types (Are The Types Wrong)
+        run: npm run check:types
+
+      - name: Install-the-tarball package test
+        run: npm run test:package

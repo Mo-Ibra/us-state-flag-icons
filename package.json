@@ -530,7 +530,8 @@
     "svg/",
     "react/",
     "string/",
-    "flags.css"
+    "flags.css",
+    "CHANGELOG.md"
   ],
   "sideEffects": false,
   "peerDependencies": {
