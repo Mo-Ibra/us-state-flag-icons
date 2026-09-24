@@ -48,6 +48,23 @@ function toEsm(code) {
 	}).code
 }
 
+// SVGR leaves attribute names it does not recognize hyphenated (e.g.
+// `transform-origin="..."`), which React logs as invalid DOM properties.
+// Convert those to camelCase while leaving `aria-*` and `data-*` attributes
+// hyphenated, which is what React expects.
+function normalizeAttributeNames(jsx) {
+	const camelCase = (name) =>
+		name.replace(/-([a-z0-9])/g, (_, character) => character.toUpperCase())
+	const shouldKeep = (name) => name.startsWith('aria-') || name.startsWith('data-')
+	return jsx
+		.replace(/([a-z][a-z0-9]*(?:-[a-z0-9]+)+)=/g, (match, name) =>
+			shouldKeep(name) ? match : `${camelCase(name)}=`
+		)
+		.replace(/"([a-z][a-z0-9]*(?:-[a-z0-9]+)+)":/g, (match, name) =>
+			shouldKeep(name) ? match : `${camelCase(name)}:`
+		)
+}
+
 async function main() {
 	const codes = await readFlagCodes()
 	if (codes.length === 0) {
@@ -62,15 +79,17 @@ async function main() {
 	for (const code of codes) {
 		const svg = await readFile(path.join(SVG_DIR, `${code}.svg`), 'utf8')
 
-		const component = transform.sync(
-			svg,
-			{
-				plugins: ['@svgr/plugin-jsx'],
-				jsxRuntime: 'classic',
-				expandProps: 'end',
-				titleProp: true,
-			},
-			{ componentName: 'SvgComponent' }
+		const component = normalizeAttributeNames(
+			transform.sync(
+				svg,
+				{
+					plugins: ['@svgr/plugin-jsx'],
+					jsxRuntime: 'classic',
+					expandProps: 'end',
+					titleProp: true,
+				},
+				{ componentName: 'SvgComponent' }
+			)
 		)
 
 		await writeFile(path.join(ESM_DIR, `${code}.js`), toEsm(component) + '\n', 'utf8')

@@ -39,6 +39,13 @@ const SVGO_CONFIG = {
 	],
 }
 
+// Some upstream flags contain invalid presentation values (e.g.
+// `opacity="NaN"`). Browsers ignore those, so drop them to keep the assets
+// valid and React-warning-free.
+function sanitizeSvg(svg) {
+	return svg.replace(/\s+[\w:-]+="(?:NaN|undefined)"/g, '')
+}
+
 async function main() {
 	await mkdir(OUTPUT_DIR, { recursive: true })
 
@@ -49,7 +56,7 @@ async function main() {
 	let bytesSaved = 0
 
 	for (const file of files) {
-		const source = await readFile(path.join(SOURCE_DIR, file), 'utf8')
+		const source = sanitizeSvg(await readFile(path.join(SOURCE_DIR, file), 'utf8'))
 		const { data } = optimize(source, SVGO_CONFIG)
 
 		if (!/viewBox=/.test(data)) {

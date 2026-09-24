@@ -14,8 +14,8 @@
     "update-exports": "node scripts/update-package-exports.js",
     "clean": "rimraf svg react string commonjs flags.css flags.zip source/states.json source/states.json.js",
     "build": "npm run clean && npm run generate-states && npm run optimize-flags && npm run generate-string-flags && npm run generate-react-flags && npm run generate-css && npm run zip-flags && npm run update-exports",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "npm run build"
+    "test": "node --test",
+    "prepublishOnly": "npm run build && npm test"
   },
   "keywords": [
     "us",
