@@ -32,6 +32,14 @@
   ],
   "author": "Mo-Ibra",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mo-Ibra/us-state-flag-icons.git"
+  },
+  "homepage": "https://github.com/Mo-Ibra/us-state-flag-icons",
+  "bugs": {
+    "url": "https://github.com/Mo-Ibra/us-state-flag-icons/issues"
+  },
   "type": "module",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
