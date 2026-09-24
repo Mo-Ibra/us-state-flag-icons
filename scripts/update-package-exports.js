@@ -20,6 +20,7 @@ const FILES = [
 	'index.js',
 	'index.cjs',
 	'index.d.ts',
+	'index.d.cts',
 	'source/states.json',
 	'source/states.json.js',
 	'svg/',
@@ -33,10 +34,18 @@ async function main() {
 	const codes = states.map((state) => state.code)
 
 	const exportsMap = {
+		// The core entry point is dual (ESM + CommonJS). Each condition carries
+		// its own `types` so the declarations match the module format: a single
+		// shared `types` would be resolved as ESM for `require()` consumers.
 		'.': {
-			types: './index.d.ts',
-			import: './index.js',
-			require: './index.cjs',
+			import: {
+				types: './index.d.ts',
+				default: './index.js',
+			},
+			require: {
+				types: './index.d.cts',
+				default: './index.cjs',
+			},
 		},
 		'./svg/*': './svg/*',
 		'./flags.css': './flags.css',
@@ -71,10 +80,19 @@ async function main() {
 	pkg.exports = exportsMap
 	pkg.files = FILES
 	pkg.sideEffects = false
+	pkg.engines = { node: '>=18.0.0' }
 	pkg.peerDependencies = { react: '>=16.8.0' }
 	pkg.peerDependenciesMeta = { react: { optional: true } }
 
 	await writeFile(PACKAGE_PATH, JSON.stringify(pkg, null, 2) + '\n', 'utf8')
+
+	// The CommonJS declarations are a copy of the ESM ones, so `index.d.ts`
+	// stays the single source of truth.
+	await writeFile(
+		path.join(ROOT, 'index.d.cts'),
+		await readFile(path.join(ROOT, 'index.d.ts'), 'utf8'),
+		'utf8'
+	)
 
 	console.log(`Updated package.json exports for ${codes.length} states.`)
 }
